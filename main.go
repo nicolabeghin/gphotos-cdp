@@ -2305,6 +2305,11 @@ func absInt(x int) int {
 // Compare two file names, where s2 is sometimes mangled by gphotos
 // there will be some false positives, this is ok
 func compareMangled(s1, s2 string) bool {
+	// Try URL-decoding s2 since Google Photos may return URL-encoded filenames
+	if decoded, err := url.QueryUnescape(s2); err == nil {
+		s2 = decoded
+	}
+	
 	sr1 := []rune(s1)
 	sr2 := []rune(s2)
 
